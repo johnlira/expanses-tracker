@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd backend && pnpm dev\"",
+    "install": "concurrently \"cd backend && pnpm install\""
+  }
+}
