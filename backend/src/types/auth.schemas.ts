@@ -15,6 +15,7 @@ export const userResponseSchema = z.object({
   id: z.number(),
   name: z.string(),
   email: z.email("Invalid email"),
+  subscriptionType: z.enum(["FREE", "PREMIUM"]),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 });

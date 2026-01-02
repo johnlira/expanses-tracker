@@ -11,6 +11,7 @@ export const me = async (req: FastifyRequest, res: FastifyReply) => {
       id: true,
       name: true,
       email: true,
+      subscriptionType: true,
       createdAt: true,
       updatedAt: true,
     },

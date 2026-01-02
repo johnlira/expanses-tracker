@@ -26,6 +26,7 @@ export const login = async (req: FastifyRequest, res: FastifyReply) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      subscriptionType: user.subscriptionType,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     },
