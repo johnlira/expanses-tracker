@@ -32,5 +32,13 @@ export const registerPlugins = async (server: FastifyInstance) => {
     transform: jsonSchemaTransform,
   });
   await server.register(routes);
-  await server.register(scalarApiReference, { routePrefix: "/api/docs" });
+  await server.register(scalarApiReference as any, {
+    routePrefix: "/docs",
+    configuration: {
+      title: "Expenses Tracker API",
+      version: "1.0.0",
+      description: "API for expenses tracking",
+      theme: "elysiajs",
+    },
+  });
 };
