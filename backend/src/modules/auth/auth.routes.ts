@@ -1,15 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { registerUser } from "./usecases/register-user";
 import {
   loginBodySchema,
   registerUserBodySchema,
   userResponseSchema,
 } from "../../types/auth.schemas";
-import { me } from "./usecases/me";
 import { authenticateMiddleware } from "../../middlewares/authenticate";
-import { logout } from "./usecases/logout";
 import z from "zod";
-import { login } from "./usecases/login";
+import { authControllers } from "./auth.controllers";
 
 export const authRoutes = async (server: FastifyInstance) => {
   // Register a new user | PUBLIC (POST /api/auth/register)
@@ -38,9 +35,9 @@ export const authRoutes = async (server: FastifyInstance) => {
         },
       },
     },
-    registerUser
+    authControllers.registerUser
   );
-  // Verify a user | PRIVATE (GET /api/auth/verify)
+  // Verify a user | PRIVATE (GET /api/auth/me)
   server.get(
     "/me",
     {
@@ -58,7 +55,7 @@ export const authRoutes = async (server: FastifyInstance) => {
       },
       preHandler: [authenticateMiddleware],
     },
-    me
+    authControllers.me
   );
   // Logout a user | PRIVATE (POST /api/auth/logout)
   server.post(
@@ -77,7 +74,7 @@ export const authRoutes = async (server: FastifyInstance) => {
       },
       preHandler: [authenticateMiddleware],
     },
-    logout
+    authControllers.logout
   );
   // Login a user | PUBLIC (POST /api/auth/login)
   server.post(
@@ -97,6 +94,6 @@ export const authRoutes = async (server: FastifyInstance) => {
         },
       },
     },
-    login
+    authControllers.login
   );
 };
