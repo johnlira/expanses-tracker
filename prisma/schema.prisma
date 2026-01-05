@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum SubscriptionType {
+  FREE
+  PREMIUM
+}
+
+enum ExpenseType {
+  INCOME
+  EXPENSE
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PIX
+  CASH
+}
+
+model User {
+  @@map("users")
+  id        Int      @id @default(autoincrement())
+  name      String   
+  email     String   @unique
+  hashedPassword  String @map("hashed_password")
+  subscriptionType SubscriptionType @default(FREE) @map("subscription_type")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  expenses Expense[]
+}
+
+model Category {
+  @@map("categories")
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  description String?
+  icon String?
+  color String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  expenses Expense[]
+}
+
+model Expense {
+  @@map("expenses")
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  user User @relation(fields: [userId], references: [id]) 
+  amount    Int
+  date      DateTime
+  description String?
+  categoryId Int?
+  type ExpenseType
+  paymentMethod PaymentMethod
+  category Category? @relation(fields: [categoryId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@index([userId])
+  @@index([date])
+  @@index([categoryId])
+}
+
